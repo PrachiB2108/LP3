@@ -1,3 +1,15 @@
+
+// g++ --version
+//     sudo apt install build-essential
+//     pass student
+// clear
+// pwd
+// cd Desktop
+// touch 72311158J.cpp
+//     g++ 72311158J.cpp
+//     ./a.out
+
+
 #include<iostream>
 #include<vector>
 #include <algorithm>
@@ -78,6 +90,21 @@ int main(){
 
 // Space Complexity: \(O(n)\)
 
+// 1. Algorithm: Fractional Knapsack Using Greedy Method
+// 1. Start the program.
+// 2. Read the number of products n.
+// 3. Read the knapsack capacity W.
+// 4. Read the value array val[] and weight array wt[].
+// 5. Calculate the value-to-weight ratio of each product using val[i] / wt[i].
+// 6. Store the ratio and original index of each product in a pair.
+// 7. Sort all products in descending order according to their ratios.
+// 8. Initialize ans = 0.
+// 9. Traverse the sorted products one by one.
+// 10. Check whether the product's weight is less than or equal to the remaining capacity.
+// 11. If yes, select the complete product, add its value to ans and subtract its weight from W.
+// 12. Otherwise, select the fraction of the product that fits, add its value (ratio × W) to ans, set W = 0 and stop.
+// 13. Display the maximum value.
+// 14. Stop the program.
 
 
 
