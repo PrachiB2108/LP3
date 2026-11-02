@@ -1,0 +1,223 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract StudentDatabase {
+    struct Student {
+        string name;
+        uint256 rollNumber;
+        string studentClass;
+    }
+
+    Student[] private students;
+
+    function addStudent(string memory name, uint256 rollNumber, string memory studentClass) public {
+        students.push(Student(name, rollNumber, studentClass));
+    }
+
+    function getStudentByID(uint256 ID) public view returns (string memory, uint256, string memory) {
+        require(ID < students.length, "Student does not exist in database");
+        Student storage s = students[ID];
+        return (s.name, s.rollNumber, s.studentClass);
+    }
+
+    function getTotalNumberOfStudents() public view returns (uint256) {
+        return students.length;
+        }
+    }
+
+//1. Aim of the program
+To create a Student Database using a Solidity smart contract that can:
+1. Add student details.
+2. Retrieve student details using ID.
+3. Display the total number of students.
+2. Explanation of code line by line
+Step 1: License and Solidity version
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+
+- SPDX-License-Identifier: MIT: Specifies the software license.
+- pragma solidity ^0.8.0: Specifies that the program uses Solidity version 0.8.0 or above, within the same major version.
+Step 2: Create a contract
+contract StudentDatabase {
+
+
+- contract is a keyword used to create a smart contract.
+- StudentDatabase is the name of our contract.
+Viva: What is a smart contract?
+
+A smart contract is a program stored and executed on a blockchain.
+Step 3: Create a structure
+struct Student {
+    string name;
+    uint256 rollNumber;
+    string studentClass;
+}
+
+
+- struct is used to create a custom data type.
+- It groups different student details together.
+Variable	Meaning
+string name	Student's name
+uint256 rollNumber	Student's roll number
+string studentClass	Student's class
+
+Example: A student record can contain:
+- Name: Prachi
+- Roll Number: 101
+- Class: BE
+Step 4: Create an array
+Student[] private students;
+
+
+- Student[] creates an array of Student records.
+- students is the array name.
+- private means the array cannot be accessed directly through an automatically generated public getter.
+We use this array to store multiple student records.
+Step 5: Add student function
+function addStudent(
+    string memory name,
+    uint256 rollNumber,
+    string memory studentClass
+) public {
+    students.push(Student(name, rollNumber, studentClass));
+}
+
+
+This function adds a new student to the database.
+
+Explanation:
+- function: Defines a function.
+- addStudent: Function name.
+- string memory name: Accepts the student's name.
+- uint256 rollNumber: Accepts the roll number.
+- string memory studentClass: Accepts the class.
+- public: Function can be called externally and internally.
+- students.push(): Adds a new student record to the array.
+Viva: What is the use of push()?
+
+It adds a new element at the end of an array.
+Step 6: Get student by ID
+function getStudentByID(uint256 ID)
+public view
+returns (string memory, uint256, string memory) {
+
+
+This function retrieves student details using their ID.
+- getStudentByID: Function name.
+- uint256 ID: Accepts the student's array index.
+- public: Can be called from outside the contract.
+- view: Reads data without modifying blockchain state.
+- returns: Specifies the values returned by the function.
+Now understand the next part:
+require(ID < students.length, "Student does not exist in database");
+
+
+- require() checks a condition.
+- It checks whether the entered ID exists.
+- If the condition is false, execution stops and displays the error message.
+Viva: Why do we use require()?
+
+To validate conditions and prevent invalid operations.
+
+Next:
+Student storage s = students[ID];
+
+
+- Student: Data type.
+- storage: Refers to the actual data stored in the blockchain.
+- s: Temporary variable name.
+- students[ID]: Selects the student at the given index.
+Next:
+return (s.name, s.rollNumber, s.studentClass);
+
+
+Returns the student's name, roll number and class.
+Step 7: Get total number of students
+function getTotalNumberOfStudents()
+public view returns (uint256) {
+    return students.length;
+}
+
+
+This function returns the total number of students stored in the array.
+- getTotalNumberOfStudents(): Function name.
+- view: Only reads data.
+- uint256: Returns an unsigned integer.
+- students.length: Gives the total number of records in the array.
+3. Program execution example
+Suppose you add these three students:
+ID (index)	Name	Roll No.	Class
+0	Prachi	101	BE
+1	Nisha	102	BE
+2	Prem	103	BE
+
+If you call:
+getStudentByID(1)
+
+
+Output:
+Nisha
+102
+BE
+
+
+If you call:
+getTotalNumberOfStudents()
+
+
+Output:
+3
+
+
+Important
+ Remember: Array indexing starts from 0, not 1. So the first student's ID is 0.
+4. Important viva questions
+Question	Simple answer
+What is Solidity?	A programming language used to write smart contracts.
+What is a contract?	A program deployed on a blockchain.
+What is struct?	It groups different variables into one data type.
+What is an array?	It stores multiple values of the same data type.
+What is uint256?	An unsigned 256-bit integer.
+What is string?	A data type used to store text.
+What is memory?	Temporary data location during function execution.
+What is storage?	Permanent contract data stored on the blockchain.
+What is public?	Allows a function or variable to be accessed publicly.
+What is view?	Allows reading data without modifying blockchain state.
+What is require()?	Checks a condition before continuing execution.
+What is push()?	Adds an element to an array.
+What is .length?	Returns the number of elements in an array.
+What is returns?	Specifies the output of a function.
+
+5. Most important questions examiner may ask
+Q1. Why did you use Solidity?
+
+To create a smart contract for storing and retrieving student records on blockchain.
+
+Q2. Why did you use an array?
+
+To store multiple student records.
+
+Q3. Why did you use a structure?
+
+To store name, roll number and class together as one student record.
+
+Q4. What is the difference between memory and storage?
+- Memory: Temporary data.
+- Storage: Permanent data stored on the blockchain.
+Q5. Why is view used?
+
+Because the function only reads data and does not change it.
+
+Q6. Does adding a student require gas?
+
+Yes. Calling addStudent() as a blockchain transaction modifies the contract's state, so it requires gas.
+
+Q7. Does getting student details require gas?
+
+A normal read-only call (view) does not require a gas payment from the caller. If executed as part of an on-chain transaction, it still consumes gas.
+
+6. Short explanation to speak in your practical exam
+You can explain your program like this:
+
+"This program is a Student Database implemented using Solidity. First, I created a structure called Student to store the student's name, roll number and class. Then I created an array to store multiple student records. The addStudent function adds student details into the array. The getStudentByID function retrieves student details using the array index. I used require to check whether the student ID exists. Finally, the getTotalNumberOfStudents function returns the total number of students."

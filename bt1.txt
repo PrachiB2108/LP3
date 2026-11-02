@@ -1,0 +1,195 @@
+// SPDX-License-Identifier: MIT  
+pragma solidity ^0.8.18;  
+contract Bank {  
+// Mapping to store balances of each customer (address)  
+mapping(address => uint256) private balances;  
+
+// Deposit money into your account  
+function depositMoney(uint256 amount) public payable {  
+require(amount > 0, "Deposit amount must be greater than zero");  
+balances[msg.sender] += amount;   
+}  
+// Withdraw money from your account  
+function withdraw(uint256 amount) public {  
+require(amount > 0, "Withdraw amount must be greater than zero");  
+require(balances[msg.sender] >= amount, "Insufficient balance");  
+balances[msg.sender] -= amount;   
+}  
+// Show your account balance  
+function showBalance() public view returns (uint256) {  
+return balances[msg.sender];  
+} 
+}
+
+//1. Aim of the program
+To implement a simple Bank Smart Contract using Solidity that allows users to:
+1. Deposit money.
+2. Withdraw money.
+3. Check their account balance.
+2. Explanation of code line by line
+Step 1: License and Solidity version
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.18;
+
+
+- SPDX-License-Identifier: MIT: Specifies the license.
+- pragma solidity ^0.8.18: Specifies the Solidity compiler version 0.8.18 or compatible later versions within 0.x.
+Step 2: Create a contract
+contract Bank {
+
+
+- contract is used to create a smart contract.
+- Bank is the contract name.
+Step 3: Create a mapping
+mapping(address => uint256) private balances;
+
+
+This is one of the most important lines.
+- mapping: Stores data in key-value pairs.
+- address: Represents a user's blockchain wallet address.
+- uint256: Stores the user's balance.
+- private: Prevents direct external access to this mapping.
+Simple example:
+Customer address	Balance
+Address A	500
+Address B	1000
+Address C	2000
+
+Each customer has a separate balance.
+Step 4: Deposit money
+function depositMoney(uint256 amount) public payable {
+    require(amount > 0, "Deposit amount must be greater than zero");
+    balances[msg.sender] += amount;
+}
+
+
+This function deposits money into the user's account balance.
+
+Explanation:
+- depositMoney: Function name.
+- uint256 amount: Amount to deposit.
+- public: Function can be called externally.
+- payable: Allows the function to receive Ether.
+- require(amount > 0): Checks that the deposit amount is greater than zero.
+- msg.sender: Address of the person calling the function.
+- balances[msg.sender] += amount: Adds the amount to that user's recorded balance.
+Example:
+
+If your balance is 500 and you deposit 200:
+
+New balance = 500 + 200 = 700.
+
+Remember
+ msg.sender means the wallet address of the person who called the function.
+Step 5: Withdraw money
+function withdraw(uint256 amount) public {
+    require(amount > 0, "Withdraw amount must be greater than zero");
+    require(balances[msg.sender] >= amount, "Insufficient balance");
+    balances[msg.sender] -= amount;
+}
+
+
+This function withdraws money from the user's recorded balance.
+
+Explanation:
+- withdraw: Function name.
+- amount: Amount to withdraw.
+- First require(): Checks that the withdrawal amount is greater than zero.
+- Second require(): Checks that the user has sufficient balance.
+- balances[msg.sender] -= amount: Subtracts the amount from the user's balance.
+Example:
+
+Current balance = 700
+
+Withdrawal = 200
+
+New balance = 700 - 200 = 500.
+
+Viva: What happens if the user withdraws more than their balance?
+
+The transaction fails and displays "Insufficient balance".
+Step 6: Show account balance
+function showBalance() public view returns (uint256) {
+    return balances[msg.sender];
+}
+
+
+This function displays the balance of the person calling it.
+- showBalance(): Function name.
+- public: Can be called externally.
+- view: Reads data without modifying it.
+- returns(uint256): Returns an unsigned integer.
+- balances[msg.sender]: Returns the balance of the current user.
+3. Example of program execution
+Suppose a user performs these operations:
+Operation	Amount	Balance
+Initial balance	0	0
+Deposit	1000	1000
+Deposit	500	1500
+Withdraw	300	1200
+Show balance	—	1200
+
+Final account balance
+1200
+Illustrative balance units
+
+4. Important Solidity keywords
+Keyword	Meaning
+mapping	Stores data in key-value pairs
+address	Represents a wallet address
+uint256	Unsigned 256-bit integer
+private	Restricts direct external access
+public	Allows external function calls
+payable	Allows a function to receive Ether
+msg.sender	Address of the function caller
+require()	Checks a condition
+view	Reads data without modifying state
+returns	Specifies the return value
+
+5. Important viva questions and answers
+Q1. What is a mapping in Solidity?
+
+Mapping is a data structure that stores information in key-value pairs.
+
+Q2. Why do we use mapping in this program?
+
+To store the balance of each customer using their wallet address.
+
+Q3. What is msg.sender?
+
+It represents the address of the person who calls the function.
+
+Q4. What is payable?
+
+It allows a function to receive Ether.
+
+Q5. What is Ether?
+
+Ether (ETH) is the cryptocurrency used on the Ethereum blockchain.
+
+Q6. What is the difference between public and private?
+- Public: Accessible externally.
+- Private: Not directly accessible externally.
+Q7. Why do we use require()?
+
+To check conditions and stop invalid transactions.
+
+Q8. Why is view used in showBalance()?
+
+Because it only reads the balance and does not modify it.
+
+Q9. What happens if the deposit amount is zero?
+
+The transaction fails because of the require() condition.
+
+Q10. Can two users have separate balances?
+
+Yes. Each user's wallet address is used as a separate mapping key.
+6. Important practical concept: One limitation in your code
+Your depositMoney() function is marked payable, but the code does not check whether the actual Ether sent matches the amount entered.
+
+Also, your withdraw() function only subtracts from the internal mapping. It does not transfer Ether back to the user's wallet.
+
+So this is a basic balance-management demonstration, not a complete secure banking contract.
+7. Short explanation to speak in your external exam
+"This program implements a simple Bank Smart Contract using Solidity. First, I created a mapping to store the balance of each user using their wallet address. The depositMoney function adds money to the user's balance. The withdraw function checks whether the withdrawal amount is valid and whether sufficient balance is available. The showBalance function displays the current user's balance. I used msg.sender to identify each user and require to validate conditions."
